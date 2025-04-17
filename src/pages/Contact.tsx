@@ -36,30 +36,98 @@ export default function Contact() {
       <div className="bg-white p-8 rounded-lg shadow-sm">
         <h2 className="text-xl font-semibold mb-6">Questions, Comments, Or Concerns?</h2>
         
-        <form className="space-y-6">
+        <form
+          className="space-y-6"
+          onSubmit={(e) => {
+            e.preventDefault();
+            const form = e.target as HTMLFormElement;
+            const nameInput = form.elements.namedItem("name") as HTMLInputElement | null;
+            const emailInput = form.elements.namedItem("email") as HTMLInputElement | null;
+            const subjectInput = form.elements.namedItem("subject") as HTMLInputElement | null;
+            const messageInput = form.elements.namedItem("message") as HTMLTextAreaElement | null;
+
+            let isValid = true;
+
+            if (nameInput) {
+              const nameError = nameInput.nextElementSibling as HTMLSpanElement;
+              if (!nameInput.value.trim()) {
+          nameError.textContent = "Name is required.";
+          nameInput.classList.add("border-red-500");
+          isValid = false;
+              } else {
+          nameError.textContent = "";
+          nameInput.classList.remove("border-red-500");
+              }
+            }
+
+            if (emailInput) {
+              const emailError = emailInput.nextElementSibling as HTMLSpanElement;
+              if (!emailInput.value.trim() || !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(emailInput.value)) {
+          emailError.textContent = "Please enter a valid email address.";
+          emailInput.classList.add("border-red-500");
+          isValid = false;
+              } else {
+          emailError.textContent = "";
+          emailInput.classList.remove("border-red-500");
+              }
+            }
+
+            if (subjectInput) {
+              const subjectError = subjectInput.nextElementSibling as HTMLSpanElement;
+              if (!subjectInput.value.trim()) {
+          subjectError.textContent = "Subject is required.";
+          subjectInput.classList.add("border-red-500");
+          isValid = false;
+              } else {
+          subjectError.textContent = "";
+          subjectInput.classList.remove("border-red-500");
+              }
+            }
+
+            if (messageInput) {
+              const messageError = messageInput.nextElementSibling as HTMLSpanElement;
+              if (!messageInput.value.trim()) {
+          messageError.textContent = "Message is required.";
+          messageInput.classList.add("border-red-500");
+          isValid = false;
+              } else {
+          messageError.textContent = "";
+          messageInput.classList.remove("border-red-500");
+              }
+            }
+
+            if (isValid) {
+              alert("Form submitted successfully!");
+            }
+          }}
+        >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                Name
+          Name
               </label>
               <input
-                type="text"
-                id="name"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter your name"
+          type="text"
+          id="name"
+          name="name"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          placeholder="Enter your name"
               />
+              <span className="text-red-500 text-sm"></span>
             </div>
-            
+
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email
+          Email
               </label>
               <input
-                type="email"
-                id="email"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter your email"
+          type="email"
+          id="email"
+          name="email"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          placeholder="Enter your email"
               />
+              <span className="text-red-500 text-sm"></span>
             </div>
           </div>
 
@@ -70,9 +138,11 @@ export default function Contact() {
             <input
               type="text"
               id="subject"
+              name="subject"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="Enter subject"
             />
+            <span className="text-red-500 text-sm"></span>
           </div>
 
           <div>
@@ -81,10 +151,12 @@ export default function Contact() {
             </label>
             <textarea
               id="message"
+              name="message"
               rows={6}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="Write your message here"
             ></textarea>
+            <span className="text-red-500 text-sm"></span>
           </div>
 
           <button
