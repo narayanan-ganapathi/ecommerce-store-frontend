@@ -1,3 +1,4 @@
+import React from 'react';
 import ProductCard from '../components/product/ProductCard';
 import { products } from '../data/products';
 

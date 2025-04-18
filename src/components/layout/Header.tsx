@@ -1,11 +1,34 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Search, ShoppingCart, Menu as MenuIcon, X, ChevronDown } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Search, ShoppingCart, Menu as MenuIcon, X, ChevronDown, User } from 'lucide-react';
 import { categories } from '../../data/categories';
+import { supabase } from '../../lib/supabase';
 
 export default function Header() {
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [user, setUser] = useState(null);
+
+  React.useEffect(() => {
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    navigate('/');
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
@@ -64,6 +87,50 @@ export default function Header() {
               />
               <Search className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
             </div>
+
+            <div className="relative">
+              <button
+                className="flex items-center gap-2"
+                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                onBlur={() => setTimeout(() => setIsUserMenuOpen(false), 200)}
+              >
+                <User className="h-6 w-6" />
+              </button>
+
+              {isUserMenuOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 border">
+                  {user ? (
+                    <>
+                      <Link to="/account" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                        My Account
+                      </Link>
+                      <Link to="/orders" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                        My Orders
+                      </Link>
+                      <Link to="/wishlist" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                        My Wishlist
+                      </Link>
+                      <button
+                        onClick={handleSignOut}
+                        className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                      >
+                        Sign Out
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <Link to="/login" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                        Login
+                      </Link>
+                      <Link to="/register" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                        Register
+                      </Link>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
+
             <button className="relative">
               <ShoppingCart className="h-6 w-6" />
               <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 text-xs text-white">
