@@ -38,7 +38,7 @@ export default function ProductDetail() {
     <div className="max-w-7xl mx-auto">
       <button
         onClick={() => navigate('/')}
-        className="flex items-center text-gray-600 hover:text-gray-900 mb-8"
+        className="flex items-center text-primary hover:text-primary-dark mb-8"
       >
         <ChevronLeft className="h-5 w-5" />
         <span>Back to Products</span>
@@ -82,7 +82,7 @@ export default function ProductDetail() {
             </div>
           </div>
 
-          <button className="mt-8 flex items-center justify-center gap-2 rounded-lg bg-blue-500 px-8 py-3 font-medium text-white hover:bg-blue-600">
+          <button className="mt-8 flex items-center justify-center gap-2 rounded-lg bg-primary px-8 py-3 font-medium text-white hover:bg-primary-dark">
             <ShoppingCart className="h-5 w-5" />
             Add to Cart
           </button>

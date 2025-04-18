@@ -68,7 +68,7 @@ export default function Footer() {
               </div>
               <button
                 type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 flex items-center gap-2"
+                className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark flex items-center gap-2"
               >
                 <Send className="h-4 w-4" />
                 Subscribe

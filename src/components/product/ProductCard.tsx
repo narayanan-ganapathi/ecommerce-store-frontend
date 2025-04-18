@@ -28,7 +28,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <div className="mt-4 flex items-center justify-between">
           <span className="text-lg font-bold">${product.price.toFixed(2)}</span>
           <button 
-            className="rounded-full bg-blue-500 p-2 text-white hover:bg-blue-600"
+            className="rounded-full bg-primary p-2 text-white hover:bg-primary-dark"
             onClick={(e) => {
               e.stopPropagation();
               // Add to cart logic here
